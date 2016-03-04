@@ -8,6 +8,7 @@
   Logged in as {{ session.username }}
   {% endif %}
   <a href="{{ url_for('index') }}">Home</a>
+  <a href="{{ url_for('add_person') }}">Add Person</a>
   {% if not session.username %}
     <a href="{{ url_for('register') }}">Register</a>
     <a href="{{ url_for('login') }}">Login</a>

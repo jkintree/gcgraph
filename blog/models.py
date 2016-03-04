@@ -29,6 +29,15 @@ class User:
         else:
             return False
 
+    def add_person(self, gcemail, password, fname, lname, postalcode, zcountry):
+        if not self.find():
+            person = Node("Person", username=self.username, gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
+	    zcountry=zcountry)
+            graph.create(person)
+            return True
+        else:
+            return False
+
     def verify_password(self, password):
         user = self.find()
         if user:

@@ -26,8 +26,37 @@ def register():
             session['username'] = username
             flash('Logged in.')
             return redirect(url_for('index'))
-
     return render_template('register.html')
+
+@app.route('/add_person', methods=['GET','POST'])
+def add_person():
+    if request.method == 'POST':
+        username = request.form['username']
+	gcemail = request.form['gcemail']
+        password = request.form['password']
+        fname = request.form['fname']
+        lname = request.form['lname']
+        postalcode = request.form['postalcode']
+        zcountry = request.form['zcountry']
+        if len(username) < 1:
+            flash('Your username must be at least one character.')
+        elif len(password) < 5:
+            flash('Your password must be at least 5 characters.')
+	elif len(fname) < 2:
+	    flash('Your First name must be at least 2 characters.')
+	elif len(lname) < 2:
+	    flash('Your Last name must be at least 2 characters.')
+	elif len(postalcode) < 5:
+	    flash('Your Postal Code name must be at least 5 characters.')
+	elif len(zcountry) < 2:
+	    flash('Your Country must be at least 2 characters.')
+        elif not User(username).add_person(gcemail, password, fname, lname, postalcode, zcountry):
+            flash('A user with that username already exists.')
+        else:
+            session['username'] = username
+            flash('Logged in.')
+            return redirect(url_for('index'))
+    return render_template('add_person.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
