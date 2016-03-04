@@ -1,25 +1,43 @@
-<!doctype html>
-<title>Global Citizens Graph</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-<div class="page">
-  <h1>Global Citizens Graph</h1>
-  <div class="metanav">
-  {% if session.gcemail %}
-  Logged in as {{ session.gcemail }}
-  {% endif %}
-  <a href="{{ url_for('index') }}">Home</a>
-  <a href="{{ url_for('search') }}">Search</a>
-  {% if not session.gcemail %}
-<!--    <a href="{{ url_for('register') }}">Register</a>  -->
-    <a href="{{ url_for('login') }}">Login</a>
-  {% else %}
-    <a href="{{ url_for('add_person') }}">Add Person</a>
-    <a href="{{ url_for('profile', gcemail=session.gcemail) }}">Profile</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-  {% endif %}
+{% extends "bootstrap/base.html" %}
+{% block title %}Global Citizens Graph bootstripped{% endblock %}
+{% block styles -%}
+    {{super()}}  {# do not forget to call super or Bootstrap's own stylesheets
+                    will disappear! #}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+{% endblock %}
+
+# <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+{% block content %}
+<div class="container-fluid">
+ <div class="row">
+  <div class="col-md-9">
+         <div id="container"></div>
   </div>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
+ </div>
+ <div class="row-fluid">
+  <div class="col-md-3">
+    <div class="page">
+       <h1>Global Citizens Graph test 2</h1>
+       <div class="metanav">
+          {% if session.gcemail %}
+          Logged in as {{ session.gcemail }}
+          {% endif %}
+          <a href="{{ url_for('index') }}">Home</a>
+          <a href="{{ url_for('search') }}">Search</a>
+          {% if not session.gcemail %}
+          <a href="{{ url_for('login') }}">Login</a>
+          {% else %}
+          <a href="{{ url_for('add_person') }}">Add Person</a>
+          <a href="{{ url_for('profile', gcemail=session.gcemail) }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+          {% endif %}
+       </div>
+       {% for message in get_flashed_messages() %}
+         <div class="flash">{{ message }}</div>
+       {% endfor %}
+       {% block page_content %}{% endblock %}
+    </div>
+  </div>
+ </div>
 </div>
+{% endblock %}
