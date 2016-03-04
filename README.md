@@ -1,3 +1,6 @@
+gcgraph
+Based on the neo4j-flask demonstration by Nicole White.
+
 # neo4j-flask
 A microblog application written in Python powered by Flask and Neo4j. Extension of Flask's microblog tutorial, [Flaskr](http://flask.pocoo.org/docs/0.10/tutorial/).
 
