@@ -1,12 +1,16 @@
-from models import User, get_todays_recent_posts
+from models import User, get_todays_recent_posts, get_people_added
 from flask import Flask, request, session, redirect, url_for, render_template, flash
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    posts = get_todays_recent_posts()
-    return render_template('index.html', posts=posts)
+    if session.get('gcemail'):
+#        people = User(session['gcemail']).get_people_added()
+        people = get_people_added()
+        return render_template('index.html', people=people)
+#        return render_template('register.html')
+    return render_template('index.html')
 
 @app.route('/register', methods=['GET','POST'])
 def register():

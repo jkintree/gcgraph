@@ -3,23 +3,13 @@
 
 <h2>Home</h2>
   {% if session.gcemail %}
-    <h3>Share New Post</h3>
-    <form action="{{ url_for('add_post') }}" method="post">
-        <dl>
-            <dt>Title:</dt>
-            <dd><input type="text" size="30" name="title"></dd>
-            <dt>Tags (separated by commas):</dt>
-            <dd><input type="text" size="30" name="tags"></dd>
-            <dt>Text:</dt>
-            <dd><textarea name="text" rows="5" cols="40"></textarea></dd>
-        </dl>
-        <input type="submit" value="Share">
-    </form>
+    <h3>People you have added:</h3>
+    {% include "display_people.html" %}
   {% endif %}
+<p>The Global Citizens Graph is not a social networking application.  The purpose of the graph is political networking.</p>
+<p>You can search the graph without logging in.</p>
+<p>For more information, see <a href="http://globalreferendum2020.org" style="color:blue;" target="_blank">globalreferendum2020.org</a></p>
 
 <br>
-
-<h3>Today's Recent Posts</h3>
-{% include "display_posts.html" %}
 
 {% endblock %}

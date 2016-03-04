@@ -117,6 +117,16 @@ class User:
 
         return graph.cypher.execute(query, they=other.gcemail, you=self.gcemail)[0]
 
+def get_people_added():
+    query = """
+    MATCH (user:Person)-[:CONNECTED]->(person:Person)
+    RETURN person
+    ORDER BY person.timestamp DESC LIMIT 20
+    """
+
+#    return graph.cypher.execute(query, gcemail=logged_in_gcemail)
+    return graph.cypher.execute(query)
+
 def get_todays_recent_posts():
     query = """
     MATCH (user:Person)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
