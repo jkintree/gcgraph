@@ -8,6 +8,7 @@
   Logged in as {{ session.gcemail }}
   {% endif %}
   <a href="{{ url_for('index') }}">Home</a>
+  <a href="{{ url_for('search') }}">Search</a>
   {% if not session.gcemail %}
 <!--    <a href="{{ url_for('register') }}">Register</a>  -->
     <a href="{{ url_for('login') }}">Login</a>

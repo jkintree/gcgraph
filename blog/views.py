@@ -1,7 +1,9 @@
 from models import User, get_todays_recent_posts, get_people_added
 from flask import Flask, request, session, redirect, url_for, render_template, flash
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+Bootstrap(app)
 
 @app.route('/')
 def index():
@@ -63,6 +65,13 @@ def add_person():
             flash('Person Added.')
             return redirect(url_for('index'))
     return render_template('add_person.html')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        gcemail = request.form['gcemail']
+# I need a conditional on finding the searched for gcemail, or not finding it
+    return render_template('search.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
