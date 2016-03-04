@@ -50,11 +50,10 @@ def add_person():
 	    flash('Your Postal Code name must be at least 5 characters.')
 	elif len(zcountry) < 2:
 	    flash('Your Country must be at least 2 characters.')
-        elif not User(username).add_person(gcemail, password, fname, lname, postalcode, zcountry):
+        elif not User(session['username']).add_person(username, gcemail, password, fname, lname, postalcode, zcountry):
             flash('A user with that username already exists.')
         else:
-            session['username'] = username
-            flash('Logged in.')
+            flash('Person Added.')
             return redirect(url_for('index'))
     return render_template('add_person.html')
 

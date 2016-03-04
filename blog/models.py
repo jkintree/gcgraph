@@ -18,22 +18,30 @@ class User:
         self.username = username
 
     def find(self):
-        user = graph.find_one("User", "username", self.username)
+        user = graph.find_one("Person", "username", self.username)
         return user
+
+    def findnew(self, username):
+	new = graph.find_one("Person", "username", username)
+	return new
 
     def register(self, password, fname):
         if not self.find():
-            user = Node("User", username=self.username, password=bcrypt.encrypt(password), fname=fname)
+            user = Node("Person", username=self.username, password=bcrypt.encrypt(password), fname=fname)
             graph.create(user)
             return True
         else:
             return False
 
-    def add_person(self, gcemail, password, fname, lname, postalcode, zcountry):
-        if not self.find():
-            person = Node("Person", username=self.username, gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
+    def add_person(self, username, gcemail, password, fname, lname, postalcode, zcountry):
+#        if not self.find():
+	if not self.findnew(username):
+	    user = self.find()
+            person = Node("Person", username=username, gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
 	    zcountry=zcountry)
-            graph.create(person)
+            rel = Relationship(user, "CONNECTED", person)
+            graph.create(rel)
+#            graph.create(person)
             return True
         else:
             return False
