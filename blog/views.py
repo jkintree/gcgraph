@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     if session.get('gcemail'):
 #        people = User(session['gcemail']).get_people_added()
-        people = get_people_added()
+        people = get_people_added(session.get('gcemail'))
         return render_template('index.html', people=people)
 #        return render_template('register.html')
     return render_template('index.html')
