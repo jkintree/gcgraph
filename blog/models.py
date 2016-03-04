@@ -34,15 +34,16 @@ class User:
         else:
             return False
 
-    def add_person(self, gcemail, password, fname, lname, postalcode, zcountry):
-#        if not self.find():
+    def add_person(self, gcemail, password, fname, lname, postalcode, zcountry, relationship):
 	if not self.findnew(gcemail):
 	    user = self.find()
             person = Node("Person", gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
 	    zcountry=zcountry, timestamp=timestamp(), date=date())
             rel = Relationship(user, "CONNECTED", person)
             graph.create(rel)
-#            graph.create(person)
+	    relationship = relationship.upper()
+	    rel = Relationship(user, relationship, person)
+            graph.create(rel)
             return True
         else:
             return False

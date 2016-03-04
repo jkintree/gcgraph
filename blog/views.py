@@ -38,19 +38,22 @@ def add_person():
         lname = request.form['lname']
         postalcode = request.form['postalcode']
         zcountry = request.form['zcountry']
+        relationship = request.form['relationship']
         if len(gcemail) < 1:
             flash('Your email address must be at least one character.')
         elif len(password) < 5:
             flash('Your password must be at least 5 characters.')
 	elif len(fname) < 2:
-	    flash('Your First name must be at least 2 characters.')
+	    flash('Your First name must be at least 2 characters.')  # I need better validation instructions
 	elif len(lname) < 2:
 	    flash('Your Last name must be at least 2 characters.')
 	elif len(postalcode) < 5:
 	    flash('Your Postal Code name must be at least 5 characters.')
 	elif len(zcountry) < 2:
 	    flash('Your Country must be at least 2 characters.')
-        elif not User(session['gcemail']).add_person(gcemail, password, fname, lname, postalcode, zcountry):
+	elif len(relationship) < 2:
+	    flash('Your Relationship must be at least 2 characters.')
+        elif not User(session['gcemail']).add_person(gcemail, password, fname, lname, postalcode, zcountry, relationship):
             flash('A user with that email address already exists.')
         else:
             flash('Person Added.')
