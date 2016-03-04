@@ -8,10 +8,8 @@ Bootstrap(app)
 @app.route('/')
 def index():
     if session.get('gcemail'):
-#        people = User(session['gcemail']).get_people_added()
         people = get_people_added(session.get('gcemail'))
         return render_template('index.html', people=people)
-#        return render_template('register.html')
     return render_template('index.html')
 
 @app.route('/register', methods=['GET','POST'])
@@ -70,7 +68,13 @@ def add_person():
 def search():
     if request.method == 'POST':
         gcemail = request.form['gcemail']
-# I need a conditional on finding the searched for gcemail, or not finding it
+	person = User(gcemail).find()
+        if not person:
+            flash('Person not found.')
+        else:
+            session['thisgcemail'] = gcemail
+            flash('Person found.')
+            return render_template('search.html', person=person)
     return render_template('search.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -85,7 +89,6 @@ def login():
             session['gcemail'] = gcemail
             flash('Logged in.')
             return redirect(url_for('index'))
-
     return render_template('login.html')
 
 @app.route('/logout')
