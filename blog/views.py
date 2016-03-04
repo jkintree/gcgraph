@@ -13,12 +13,14 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
+        fname = request.form['fname']
         if len(username) < 1:
             flash('Your username must be at least one character.')
         elif len(password) < 5:
             flash('Your password must be at least 5 characters.')
-        elif not User(username).register(password):
+	elif len(fname) < 2:
+	    flash('Your First name must be at least 2 characters.')
+        elif not User(username).register(password, fname):
             flash('A user with that username already exists.')
         else:
             session['username'] = username
@@ -53,6 +55,7 @@ def add_post():
     title = request.form['title']
     tags = request.form['tags']
     text = request.form['text']
+    fname = request.form['fname']
 
     if not title or not tags or not text:
         if not title:
@@ -62,7 +65,7 @@ def add_post():
         if not text:
             flash('You must give your post a text body.')
     else:
-        User(session['username']).add_post(title, tags, text)
+        User(session['username']).add_post(title, tags, text, fname)
 
     return redirect(url_for('index'))
 

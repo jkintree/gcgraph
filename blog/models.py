@@ -21,9 +21,9 @@ class User:
         user = graph.find_one("User", "username", self.username)
         return user
 
-    def register(self, password):
+    def register(self, password, fname):
         if not self.find():
-            user = Node("User", username=self.username, password=bcrypt.encrypt(password))
+            user = Node("User", username=self.username, password=bcrypt.encrypt(password), fname=fname)
             graph.create(user)
             return True
         else:
@@ -36,13 +36,14 @@ class User:
         else:
             return False
 
-    def add_post(self, title, tags, text):
+    def add_post(self, title, tags, text, fname):
         user = self.find()
         post = Node(
             "Post",
             id=str(uuid.uuid4()),
             title=title,
             text=text,
+	    fname=fname,
             timestamp=timestamp(),
             date=date()
         )
