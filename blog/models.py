@@ -14,31 +14,32 @@ if username and password:
 graph = Graph(url + '/db/data/')
 
 class User:
-    def __init__(self, username):
-        self.username = username
+    def __init__(self, gcemail):
+        self.gcemail = gcemail
 
     def find(self):
-        user = graph.find_one("Person", "username", self.username)
+        user = graph.find_one("Person", "gcemail", self.gcemail)
         return user
 
-    def findnew(self, username):
-	new = graph.find_one("Person", "username", username)
+    def findnew(self, gcemail):
+	new = graph.find_one("Person", "gcemail", gcemail)
 	return new
 
-    def register(self, password, fname):
+    def register(self, password, fname, lname, postalcode, zcountry):
         if not self.find():
-            user = Node("Person", username=self.username, password=bcrypt.encrypt(password), fname=fname)
+            user = Node("Person", gcemail=self.gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
+	    zcountry=zcountry, timestamp=timestamp(), date=date())
             graph.create(user)
             return True
         else:
             return False
 
-    def add_person(self, username, gcemail, password, fname, lname, postalcode, zcountry):
+    def add_person(self, gcemail, password, fname, lname, postalcode, zcountry):
 #        if not self.find():
-	if not self.findnew(username):
+	if not self.findnew(gcemail):
 	    user = self.find()
-            person = Node("Person", username=username, gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
-	    zcountry=zcountry)
+            person = Node("Person", gcemail=gcemail, password=bcrypt.encrypt(password), fname=fname, lname=lname, postalcode=postalcode, 
+	    zcountry=zcountry, timestamp=timestamp(), date=date())
             rel = Relationship(user, "CONNECTED", person)
             graph.create(rel)
 #            graph.create(person)
@@ -53,14 +54,13 @@ class User:
         else:
             return False
 
-    def add_post(self, title, tags, text, fname):
+    def add_post(self, title, tags, text):
         user = self.find()
         post = Node(
             "Post",
             id=str(uuid.uuid4()),
             title=title,
             text=text,
-	    fname=fname,
             timestamp=timestamp(),
             date=date()
         )
@@ -80,47 +80,47 @@ class User:
 
     def get_recent_posts(self):
         query = """
-        MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
-        WHERE user.username = {username}
+        MATCH (user:Person)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
+        WHERE user.gcemail = {gcemail}
         RETURN post, COLLECT(tag.name) AS tags
         ORDER BY post.timestamp DESC LIMIT 5
         """
 
-        return graph.cypher.execute(query, username=self.username)
+        return graph.cypher.execute(query, gcemail=self.gcemail)
 
     def get_similar_users(self):
         # Find three users who are most similar to the logged-in user
         # based on tags they've both blogged about.
         query = """
-        MATCH (you:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
-              (they:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
-        WHERE you.username = {username} AND you <> they
+        MATCH (you:Person)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
+              (they:Person)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
+        WHERE you.gcemail = {gcemail} AND you <> they
         WITH they, COLLECT(DISTINCT tag.name) AS tags, COUNT(DISTINCT tag) AS len
         ORDER BY len DESC LIMIT 3
-        RETURN they.username AS similar_user, tags
+        RETURN they.gcemail AS similar_user, tags
         """
 
-        return graph.cypher.execute(query, username=self.username)
+        return graph.cypher.execute(query, gcemail=self.gcemail)
 
     def get_commonality_of_user(self, other):
         # Find how many of the logged-in user's posts the other user
         # has liked and which tags they've both blogged about.
         query = """
-        MATCH (they:User {username: {they} })
-        MATCH (you:User {username: {you} })
+        MATCH (they:Person {gcemail: {they} })
+        MATCH (you:Person {gcemail: {you} })
         OPTIONAL MATCH (they)-[:LIKED]->(post:Post)<-[:PUBLISHED]-(you)
         OPTIONAL MATCH (they)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
                        (you)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
         RETURN COUNT(DISTINCT post) AS likes, COLLECT(DISTINCT tag.name) AS tags
         """
 
-        return graph.cypher.execute(query, they=other.username, you=self.username)[0]
+        return graph.cypher.execute(query, they=other.gcemail, you=self.gcemail)[0]
 
 def get_todays_recent_posts():
     query = """
-    MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
+    MATCH (user:Person)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
     WHERE post.date = {today}
-    RETURN user.username AS username, post, COLLECT(tag.name) AS tags
+    RETURN user.gcemail AS gcemail, post, COLLECT(tag.name) AS tags
     ORDER BY post.timestamp DESC LIMIT 5
     """
 

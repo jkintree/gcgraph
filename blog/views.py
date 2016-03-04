@@ -11,19 +11,20 @@ def index():
 @app.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        gcemail = request.form['gcemail']
         password = request.form['password']
-        fname = request.form['fname']
-        if len(username) < 1:
-            flash('Your username must be at least one character.')
+	fname = request.form['fname']
+	lname = request.form['lname']
+	postalcode = request.form['postalcode']
+	zcountry = request.form['zcountry']
+        if len(gcemail) < 1:
+            flash('Your Email Address must be at least one character.')
         elif len(password) < 5:
             flash('Your password must be at least 5 characters.')
-	elif len(fname) < 2:
-	    flash('Your First name must be at least 2 characters.')
-        elif not User(username).register(password, fname):
-            flash('A user with that username already exists.')
+        elif not User(gcemail).register(password, fname, lname, postalcode, zcountry):
+            flash('A user with that email address already exists.')
         else:
-            session['username'] = username
+            session['gcemail'] = gcemail
             flash('Logged in.')
             return redirect(url_for('index'))
     return render_template('register.html')
@@ -31,15 +32,14 @@ def register():
 @app.route('/add_person', methods=['GET','POST'])
 def add_person():
     if request.method == 'POST':
-        username = request.form['username']
 	gcemail = request.form['gcemail']
         password = request.form['password']
         fname = request.form['fname']
         lname = request.form['lname']
         postalcode = request.form['postalcode']
         zcountry = request.form['zcountry']
-        if len(username) < 1:
-            flash('Your username must be at least one character.')
+        if len(gcemail) < 1:
+            flash('Your email address must be at least one character.')
         elif len(password) < 5:
             flash('Your password must be at least 5 characters.')
 	elif len(fname) < 2:
@@ -50,8 +50,8 @@ def add_person():
 	    flash('Your Postal Code name must be at least 5 characters.')
 	elif len(zcountry) < 2:
 	    flash('Your Country must be at least 2 characters.')
-        elif not User(session['username']).add_person(username, gcemail, password, fname, lname, postalcode, zcountry):
-            flash('A user with that username already exists.')
+        elif not User(session['gcemail']).add_person(gcemail, password, fname, lname, postalcode, zcountry):
+            flash('A user with that email address already exists.')
         else:
             flash('Person Added.')
             return redirect(url_for('index'))
@@ -60,13 +60,13 @@ def add_person():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        gcemail = request.form['gcemail']
         password = request.form['password']
 
-        if not User(username).verify_password(password):
+        if not User(gcemail).verify_password(password):
             flash('Invalid login.')
         else:
-            session['username'] = username
+            session['gcemail'] = gcemail
             flash('Logged in.')
             return redirect(url_for('index'))
 
@@ -74,7 +74,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.pop('gcemail', None)
     flash('Logged out.')
     return redirect(url_for('index'))
 
@@ -83,7 +83,6 @@ def add_post():
     title = request.form['title']
     tags = request.form['tags']
     text = request.form['text']
-    fname = request.form['fname']
 
     if not title or not tags or not text:
         if not title:
@@ -93,45 +92,45 @@ def add_post():
         if not text:
             flash('You must give your post a text body.')
     else:
-        User(session['username']).add_post(title, tags, text, fname)
+        User(session['gcemail']).add_post(title, tags, text)
 
     return redirect(url_for('index'))
 
 @app.route('/like_post/<post_id>')
 def like_post(post_id):
-    username = session.get('username')
+    gcemail = session.get('gcemail')
 
-    if not username:
+    if not gcemail:
         flash('You must be logged in to like a post.')
         return redirect(url_for('login'))
 
-    User(username).like_post(post_id)
+    User(gcemail).like_post(post_id)
 
     flash('Liked post.')
     return redirect(request.referrer)
 
-@app.route('/profile/<username>')
-def profile(username):
-    logged_in_username = session.get('username')
-    user_being_viewed_username = username
+@app.route('/profile/<gcemail>')
+def profile(gcemail):
+    logged_in_gcemail = session.get('gcemail')
+    user_being_viewed_gcemail = gcemail
 
-    user_being_viewed = User(user_being_viewed_username)
+    user_being_viewed = User(user_being_viewed_gcemail)
     posts = user_being_viewed.get_recent_posts()
 
     similar = []
     common = []
 
-    if logged_in_username:
-        logged_in_user = User(logged_in_username)
+    if logged_in_gcemail:
+        logged_in_user = User(logged_in_gcemail)
 
-        if logged_in_user.username == user_being_viewed.username:
+        if logged_in_user.gcemail == user_being_viewed.gcemail:
             similar = logged_in_user.get_similar_users()
         else:
             common = logged_in_user.get_commonality_of_user(user_being_viewed)
 
     return render_template(
         'profile.html',
-        username=username,
+        gcemail=gcemail,
         posts=posts,
         similar=similar,
         common=common

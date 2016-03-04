@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<h2>{{ username }}'s profile</h2>
+<h2>{{ gcemail }}'s profile</h2>
 
-{% if session.username %}
-    {% if session.username == username %}
+{% if session.gcemail %}
+    {% if session.gcemail == gcemail %}
         <h3>Users similar to you:</h3>
 
           {% for user in similar %}
             <p>
-            <a href="{{ url_for('profile', username=user.similar_user) }}">{{ user.similar_user }}</a>
+            <a href="{{ url_for('profile', gcemail=user.similar_user) }}">{{ user.similar_user }}</a>
             also blogs about <i>{{ ", ".join(user.tags) }}</i>
             </p>
           {% else %}
@@ -20,7 +20,7 @@
 
     {% else %}
 
-  <p>{{ username }} has liked {{ common.likes }} of your posts and
+  <p>{{ gcemail }} has liked {{ common.likes }} of your posts and
       {% if common.tags %}
       also blogs about <i>{{ ", ".join(common.tags) }}</i>
       {% else %}
@@ -28,7 +28,7 @@
       {% endif %}
   </p>
 
-  <h3>{{ username }}'s recent posts:</h3>
+  <h3>{{ gcemail }}'s recent posts:</h3>
 
     {% endif %}
 {% endif %}

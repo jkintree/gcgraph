@@ -4,15 +4,16 @@
 <div class="page">
   <h1>My Blogging Site</h1>
   <div class="metanav">
-  {% if session.username %}
-  Logged in as {{ session.username }}
+  {% if session.gcemail %}
+  Logged in as {{ session.gcemail }}
   {% endif %}
   <a href="{{ url_for('index') }}">Home</a>
-  {% if not session.username %}
+  {% if not session.gcemail %}
+<!--    <a href="{{ url_for('register') }}">Register</a>  -->
     <a href="{{ url_for('login') }}">Login</a>
   {% else %}
     <a href="{{ url_for('add_person') }}">Add Person</a>
-    <a href="{{ url_for('profile', username=session.username) }}">Profile</a>
+    <a href="{{ url_for('profile', gcemail=session.gcemail) }}">Profile</a>
     <a href="{{ url_for('logout') }}">Logout</a>
   {% endif %}
   </div>
