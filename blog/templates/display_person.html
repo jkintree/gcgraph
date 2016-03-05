@@ -1,0 +1,11 @@
+  <ul class="people">
+    <li>
+    	<b>{{ person.fname }} {{ person.lname }}</b>, 
+        {% if request.path == "/" %}
+    	email: <a href="{{ url_for('profile', gcemail=person.gcemail) }}">{{ person.gcemail }}</a>
+        {% endif %}
+    	added to the graph on {{ person.date }}, 
+    	{{ person.postalcode }} in {{ person.zcountry }}
+  </ul>
+
+

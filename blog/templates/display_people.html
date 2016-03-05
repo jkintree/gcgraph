@@ -1,0 +1,13 @@
+  <ul class="people">
+  {% for row in people %}
+    <li>
+    	<b>{{ row.person.fname }} {{ row.person.lname }}</b>, 
+        {% if request.path == "/" %}
+    	email: <a href="{{ url_for('profile', gcemail=row.person.gcemail) }}">{{ row.person.gcemail }}</a>
+        {% endif %}
+    	on {{ row.person.date }}
+    	{{ row.person.postalcode }} {{ row.person.zcountry }}
+  {% else %}
+    <li>You haven't added any people yet!
+  {% endfor %}
+  </ul>
