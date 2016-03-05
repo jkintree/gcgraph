@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block page_content %}
-  <h2>Add Person</h2>
+  <h3>Add Person</h3>
 	<form action="{{ url_for('add_person') }}" method="post">
         <dl>
 	    <dt>Email Address:</dt>
@@ -15,7 +15,7 @@
             <dd><input type="text" name="postalcode"></dd>
             <dt>Country:</dt> 
             <dd><input type="text" name="zcountry"></dd>
-<p>For relationship, if you are the friend of the person you are adding to the graph, enter friend; if the father of the person, enter father or parent, and so on for neighbor, cousin, co-worker, whatever your single, main relationship with this person is.</p>
+<p>For relationship, enter a word such as brother, friend, or co-worker that best fills in the blank for "I am the _____ of this person I am adding to the graph."</p>
             <dt>Relationship:</dt>
             <dd><input type="text" name="relationship"></dd>
         </dl>

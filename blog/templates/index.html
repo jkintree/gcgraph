@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block page_content %}
 
-<h2>Home</h2>
+<h3>Home</h3>
   {% if session.gcemail %}
-    <h3>People you have added:</h3>
+    <h4>People you have added:</h4>
     {% include "display_people.html" %}
   {% endif %}
 <p>The Global Citizens Graph is not a social networking application.  The purpose of the graph is political networking.</p>

@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block page_content %}
 
-<h2>{{ gcemail }}'s profile</h2>
+<h3>{{ gcemail }}'s profile</h3>
 
 {% if session.gcemail %}
     {% if session.gcemail == gcemail %}
-        <h3>Users similar to you:</h3>
+        <h4>Users similar to you:</h4>
 
           {% for user in similar %}
             <p>
@@ -16,7 +16,7 @@
             <p>There aren't any users who've blogged about the same tags as you!</p>
           {% endfor %}
 
-        <h3>Your recent posts:</h3>
+        <h4>Your recent posts:</h4>
 
     {% else %}
 
@@ -28,7 +28,7 @@
       {% endif %}
   </p>
 
-  <h3>{{ gcemail }}'s recent posts:</h3>
+  <h4>{{ gcemail }}'s recent posts:</h4>
 
     {% endif %}
 {% endif %}
