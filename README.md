@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 # gcgraph
 Based on neo4j-flask tutorial by Nicole White.
 =======
-gcgraph
-Based on the neo4j-flask demonstration by Nicole White.
->>>>>>> ba1bd77160fd99551a2c0bd0f03e228fa71cb945
+The Global Citizens Graph is not a social networking application.  The purpose is political networking. The idea is that every person who is alive today is a citizen of planet Earth.  The goal is to create a graph of all of humanity. For more information, see globalreferendum2020.org
+John Kintree
+March 9, 2016
 
 # neo4j-flask
 A microblog application written in Python powered by Flask and Neo4j. Extension of Flask's microblog tutorial, [Flaskr](http://flask.pocoo.org/docs/0.10/tutorial/).
