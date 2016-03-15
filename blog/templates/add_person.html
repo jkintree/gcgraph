@@ -3,21 +3,21 @@
   <h3>Add Person</h3>
 	<form action="{{ url_for('add_person') }}" method="post">
         <dl>
-	    <dt>Email Address:</dt>
-	    <dd><input type="email" name="gcemail"><dd>
-            <dt>Password:</dt>
-            <dd><input type="password" name="password"></dd>
             <dt>First Name:</dt>
             <dd><input type="text" name="fname"></dd>
             <dt>Last Name:</dt>
             <dd><input type="text" name="lname"></dd>
+<p>For relationship, enter a word such as brother, friend, or co-worker that best fills in the blank for "I am the _____ of this person I am adding to the graph."</p>
+            <dt>Relationship:</dt>
+            <dd><input type="text" name="relationship"></dd>
+	    <dt>Email Address:</dt>
+	    <dd><input type="email" name="gcemail"><dd>
+            <dt>Password:</dt>
+            <dd><input type="password" name="password"></dd>
             <dt>Postal Code:</dt>
             <dd><input type="text" name="postalcode"></dd>
             <dt>Country:</dt> 
             <dd><input type="text" name="zcountry"></dd>
-<p>For relationship, enter a word such as brother, friend, or co-worker that best fills in the blank for "I am the _____ of this person I am adding to the graph."</p>
-            <dt>Relationship:</dt>
-            <dd><input type="text" name="relationship"></dd>
         </dl>
         <input type="submit" value="Add Person">
 	</form>
