@@ -22,7 +22,7 @@ class User:
         return user
 
     def findnew(self, gcemail):
-	new = graph.find_one("Person", "gcemail", gcemail)
+	new = graph.find_one("Person", "gcemail", gcemail) 
 	return new
 
     def register(self, password, fname, lname, postalcode, zcountry):
@@ -117,6 +117,19 @@ class User:
 
         return graph.cypher.execute(query, they=other.gcemail, you=self.gcemail)[0]
 
+def num_people_added(num_gcemail):
+    query = """
+    MATCH (user:Person)-[:CONNECTED]->(person:Person)
+    WHERE user.gcemail = {gcemail}
+    RETURN count(person) AS numAdded
+    """
+
+    return graph.cypher.execute(query, gcemail=num_gcemail)
+
+def gctest():
+    return True
+
+
 def get_people_added(logged_in_gcemail):
     query = """
     MATCH (user:Person)-[:CONNECTED]->(person:Person)
@@ -126,7 +139,6 @@ def get_people_added(logged_in_gcemail):
     """
 
     return graph.cypher.execute(query, gcemail=logged_in_gcemail)
-#    return graph.cypher.execute(query)
 
 def get_todays_recent_posts():
     query = """

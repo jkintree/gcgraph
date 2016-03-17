@@ -8,6 +8,8 @@ Bootstrap(app)
 @app.route('/')
 def index():
     if session.get('gcemail'):
+#	gctest = gctest()
+#	numAdded = num_people_added(session.get('gcemail'))
         people = get_people_added(session.get('gcemail'))
         return render_template('index.html', people=people)
     return render_template('index.html')
@@ -58,7 +60,7 @@ def add_person():
 	elif len(relationship) < 2:
 	    flash('Your Relationship must be at least 2 characters.')
         elif not User(session['gcemail']).add_person(gcemail, password, fname, lname, postalcode, zcountry, relationship):
-            flash('A user with that email address already exists.')
+            flash('A person with that email address already exists.')
         else:
             flash('Person Added.')
             return redirect(url_for('index'))
@@ -82,7 +84,6 @@ def login():
     if request.method == 'POST':
         gcemail = request.form['gcemail']
         password = request.form['password']
-
         if not User(gcemail).verify_password(password):
             flash('Invalid login.')
         else:
