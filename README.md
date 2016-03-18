@@ -3,6 +3,8 @@ Based on neo4j-flask tutorial by Nicole White.
 
 The Global Citizens Graph is not a social networking application.  The purpose is political networking. The idea is that every person who is alive today is a citizen of planet Earth.  The goal is to create a graph of all of humanity. For more information, see globalreferendum2020.org
 
+To begin, uncomment the line for the Register command in layout.html in order to register yourself in the graph.  Then re-comment that line so every additional person in the graph is added by someone who is already in the graph.
+
 John Kintree, 
 March 9, 2016
 

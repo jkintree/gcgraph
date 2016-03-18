@@ -117,14 +117,14 @@ class User:
 
         return graph.cypher.execute(query, they=other.gcemail, you=self.gcemail)[0]
 
-def num_people_added(num_gcemail):
+def num_people_added(logged_in_gcemail):
     query = """
     MATCH (user:Person)-[:CONNECTED]->(person:Person)
     WHERE user.gcemail = {gcemail}
     RETURN count(person) AS numAdded
     """
 
-    return graph.cypher.execute(query, gcemail=num_gcemail)
+    return graph.cypher.execute(query, gcemail=logged_in_gcemail)
 
 def gctest():
     return True
